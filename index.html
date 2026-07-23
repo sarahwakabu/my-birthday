@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday My Love! 🎂 | Extraordinary Digital Notebook</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Canvas Confetti Library for Birthday Celebration -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- Floating Background Polaroid Wall (Drifting Real Memories) -->
+  <div class="bg-photo-wall" id="bg-photo-wall">
+    <div class="bg-floating-polaroid" style="top: 8%; left: 4%; animation-delay: 0s;">
+      <img src="assets/images/177a155cee575e2bf58e94919bc8c18d_0.jpeg" alt="Memory">
+    </div>
+    <div class="bg-floating-polaroid" style="top: 55%; left: 6%; animation-delay: -6s;">
+      <img src="assets/images/IMG_20251115_121123.jpg" alt="Memory">
+    </div>
+    <div class="bg-floating-polaroid" style="top: 12%; right: 5%; animation-delay: -12s;">
+      <img src="assets/images/IMG_20260617_095026.jpg" alt="Memory">
+    </div>
+    <div class="bg-floating-polaroid" style="top: 65%; right: 6%; animation-delay: -18s;">
+      <img src="assets/images/IMG_20260703_133327.jpg" alt="Memory">
+    </div>
+  </div>
+
+  <!-- Floating Heart & Sparkle Particles Canvas -->
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- Main Container: Digital Notebook Card -->
+  <main class="notebook-container">
+    
+    <!-- Notebook Binder Rings Header -->
+    <div class="notebook-binder">
+      <div class="binder-ring"></div>
+      <div class="binder-ring"></div>
+      <div class="binder-ring"></div>
+      <div class="binder-ring"></div>
+      <div class="binder-ring"></div>
+      <div class="binder-ring"></div>
+      <div class="binder-ring"></div>
+      <div class="binder-ring"></div>
+      <div class="binder-ring"></div>
+      <div class="binder-ring"></div>
+    </div>
+
+    <!-- Background Music / Ambient Audio Toggle -->
+    <button id="audio-toggle-btn" class="audio-control-btn" aria-label="Toggle background music">
+      <span id="audio-icon">🎵</span> <span id="audio-label">Music: Off</span>
+    </button>
+
+    <!-- ===================================================================
+         1. LANDING SCREEN VIEW WITH CAT & BLOWABLE BIRTHDAY CAKE
+         =================================================================== -->
+    <section id="landing-view" class="view-section active">
+      <div class="landing-content">
+        <div class="paper-tape-top"></div>
+        
+        <!-- Cat Graphic & Blowable Birthday Cake Wrapper -->
+        <div class="cat-cake-wrapper">
+          <!-- Animated Cat SVG -->
+          <div class="cat-graphic-wrapper" id="cat-wrapper" title="Click me for a meow!">
+            <div class="floating-heart-cat">💖</div>
+            <svg class="cat-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Cat Body -->
+              <ellipse cx="100" cy="140" rx="60" ry="45" fill="#FFC8DD" />
+              <!-- Cat Head -->
+              <circle cx="100" cy="90" r="50" fill="#FFC8DD" />
+              <!-- Cat Ears -->
+              <polygon points="60,55 40,15 75,40" fill="#FF85A1" />
+              <polygon points="63,50 48,22 72,40" fill="#FFA6C1" />
+              <polygon points="140,55 160,15 125,40" fill="#FF85A1" />
+              <polygon points="137,50 152,22 128,40" fill="#FFA6C1" />
+              <!-- Cat Eyes -->
+              <circle class="cat-eye-left" cx="80" cy="85" r="7" fill="#2B2D42" />
+              <circle class="cat-eye-right" cx="120" cy="85" r="7" fill="#2B2D42" />
+              <circle cx="78" cy="83" r="2.5" fill="#FFF" />
+              <circle cx="118" cy="83" r="2.5" fill="#FFF" />
+              <!-- Cat Cheeks -->
+              <ellipse cx="70" cy="95" rx="8" ry="5" fill="#FF6B8B" opacity="0.6" />
+              <ellipse cx="130" cy="95" rx="8" ry="5" fill="#FF6B8B" opacity="0.6" />
+              <!-- Cat Nose & Mouth -->
+              <polygon points="100,92 95,97 105,97" fill="#E63946" />
+              <path d="M95 100 Q100 106 105 100" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" fill="none" />
+              <!-- Cat Whiskers -->
+              <line x1="50" y1="88" x2="25" y2="85" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
+              <line x1="50" y1="95" x2="25" y2="97" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
+              <line x1="150" y1="88" x2="175" y2="85" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
+              <line x1="150" y1="95" x2="175" y2="97" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
+              <!-- Cat Paws -->
+              <ellipse class="cat-paw-left" cx="70" cy="140" rx="14" ry="10" fill="#FFF0F3" />
+              <ellipse class="cat-paw-right" cx="130" cy="140" rx="14" ry="10" fill="#FFF0F3" />
+              <!-- Cat Tail -->
+              <path class="cat-tail" d="M150 150 C180 150 190 110 175 90" stroke="#FF85A1" stroke-width="14" stroke-linecap="round" fill="none" />
+            </svg>
+          </div>
+
+          <!-- Interactive Blowable Birthday Cake -->
+          <div class="cake-widget" id="cake-widget" title="Click to blow out the birthday candle & make a wish!">
+            <div class="candle-flame" id="candle-flame"></div>
+            <div class="candle-smoke" id="candle-smoke">💨✨</div>
+            <svg viewBox="0 0 100 100" width="100%" height="100%">
+              <!-- Candle wick & stick -->
+              <line x1="50" y1="28" x2="50" y2="40" stroke="#2B2D42" stroke-width="2" />
+              <rect x="47" y="38" width="6" height="16" fill="#FF85A1" rx="2" />
+              <!-- Cake top layer -->
+              <rect x="25" y="54" width="50" height="18" fill="#FFC6C7" rx="4" />
+              <path d="M25 54 C30 60, 35 54, 40 60 C45 54, 50 60, 55 54 C60 60, 65 54, 70 60 C75 54, 75 54, 75 54" fill="none" stroke="#FFF" stroke-width="3" />
+              <!-- Cake bottom layer -->
+              <rect x="15" y="70" width="70" height="24" fill="#FF85A1" rx="6" />
+              <!-- Strawberries / Cherries on cake -->
+              <circle cx="28" cy="52" r="4" fill="#E63946" />
+              <circle cx="50" cy="52" r="4" fill="#E63946" />
+              <circle cx="72" cy="52" r="4" fill="#E63946" />
+            </svg>
+          </div>
+        </div>
+
+        <h1 class="landing-title text-shimmer">Hello my love!</h1>
+        <p class="landing-subtitle">Do you want to see your birthday gift?</p>
+
+        <div class="landing-buttons">
+          <button id="btn-yes" class="btn-primary">YES PLEASE 💕</button>
+          <button id="btn-no" class="btn-secondary-playful">NO THANKS 🙈</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         2. MAIN MENU HUB ("THESE ARE FOR YOU!")
+         =================================================================== -->
+    <section id="main-menu-view" class="view-section">
+      <div class="menu-header">
+        <h2 class="menu-title text-shimmer">THESE ARE FOR YOU! 🎁</h2>
+        <p class="menu-subtitle">Click on any gift card below to open your special birthday surprises...</p>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Card 1: Photos & Memories -->
+        <article class="gift-card" id="card-photos">
+          <div class="gift-card-tape"></div>
+          <div class="gift-card-icon">📸</div>
+          <h3 class="gift-card-title">Captured Memories</h3>
+          <p class="gift-card-desc">Our 29 favorite moments, polaroids & snapshot highlights</p>
+        </article>
+
+        <!-- Card 2: Love Letter -->
+        <article class="gift-card" id="card-letter">
+          <div class="gift-card-tape"></div>
+          <div class="gift-card-icon">💌</div>
+          <h3 class="gift-card-title">Love Letter</h3>
+          <p class="gift-card-desc">A handwritten message written straight from the heart</p>
+        </article>
+
+        <!-- Card 3: Birthday Lock / Date -->
+        <article class="gift-card" id="card-lock">
+          <div class="badge-locked">🔒 Locked</div>
+          <div class="gift-card-tape"></div>
+          <div class="gift-card-icon">🔐</div>
+          <h3 class="gift-card-title">Secret Surprise</h3>
+          <p class="gift-card-desc">Requires entering your birthday date to unlock the secret!</p>
+        </article>
+
+        <!-- Card 4: Flower Bouquet -->
+        <article class="gift-card" id="card-flowers">
+          <div class="gift-card-tape"></div>
+          <div class="gift-card-icon">💐</div>
+          <h3 class="gift-card-title">Virtual Bouquet</h3>
+          <p class="gift-card-desc">Interactive blooming flowers that never fade away</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         3A. SUB-VIEW: PHOTO / MEMORIES GALLERY (DYNAMIC 29 REAL PHOTOS)
+         =================================================================== -->
+    <section id="photos-view" class="view-section">
+      <div class="sub-view-container">
+        <button class="back-btn btn-back-menu">🏠 Back to Main Menu</button>
+        
+        <div class="gallery-header">
+          <h2 class="gallery-title text-shimmer">Captured Memories 📸</h2>
+          <p style="color: var(--text-muted); font-family: var(--font-doodle); font-size: 1.15rem;">Click any polaroid photo to open in fullscreen lightbox!</p>
+        </div>
+
+        <!-- Dynamic 29 Photo Polaroid Grid Container -->
+        <div class="polaroid-grid-16" id="polaroid-container"></div>
+
+        <!-- Custom Upload Option -->
+        <input type="file" id="custom-photo-input" accept="image/*" style="display: none;">
+        <button class="upload-custom-photo-btn" id="btn-add-memory">➕ Add Another Memory Photo</button>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         3B. SUB-VIEW: LOVE LETTER NOTEPAD & ATTACHED SCRAPBOOK PHOTO
+         =================================================================== -->
+    <section id="letter-view" class="view-section">
+      <div class="sub-view-container">
+        <button class="back-btn btn-back-menu">🏠 Back to Main Menu</button>
+        
+        <div class="letter-notepad">
+          <!-- Attached Memory Photo Scrapbook -->
+          <div class="letter-attached-photo" id="letter-attached-photo" title="Click to view photo">
+            <img src="assets/images/46652e6053849359bfd984a28b59d37a_0.jpeg" alt="Taped Photo">
+          </div>
+
+          <div class="letter-stamp">
+            <span>SARAH</span>
+            <span>★ 2026 ★</span>
+          </div>
+
+          <h2 class="letter-title text-shimmer">Happy Birthday, My Love! ❤️</h2>
+          
+          <div class="letter-body" id="letter-body-text">
+Happy Birthday to my favorite person in the entire world! 🎂
+
+Even though miles and screens separate us today, my heart has never felt closer to anyone. Distance only proves how strong and genuine our love really is. Every video call, every late-night voice message, and every shared laugh means the universe to me.
+
+Thank you for bringing so much warmth, comfort, and happiness into my life. I am counting down every single second until I get to hold you tight and celebrate in person.
+
+Wishing you a day filled with all your favorite things, endless smiles, and joy!
+
+Always & Forever Yours,
+          </div>
+
+          <div class="letter-signature">Timothy 💕</div>
+
+          <div class="letter-controls">
+            <button class="btn-small" id="btn-typewriter">▶ Typewriter Mode</button>
+            <button class="btn-small" id="btn-edit-letter">✏️ Custom Edit</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         3C. SUB-VIEW: VIRTUAL FLOWER BOUQUET
+         =================================================================== -->
+    <section id="flowers-view" class="view-section">
+      <div class="sub-view-container">
+        <button class="back-btn btn-back-menu">🏠 Back to Main Menu</button>
+        
+        <div class="bouquet-container">
+          <h2 class="text-shimmer" style="font-family: var(--font-handwriting); font-size: 3.2rem;">Your Favorite Flowers 💐</h2>
+          <p style="color: var(--text-muted); font-size: 1rem;">Click on the flower petals to reveal sweet love notes!</p>
+
+          <div class="bouquet-svg-wrapper" id="bouquet-wrapper">
+            <svg viewBox="0 0 250 300" width="100%" height="100%">
+              <!-- Vase -->
+              <path d="M85 200 C80 270 170 270 165 200 C160 170 90 170 85 200 Z" fill="rgba(255,255,255,0.75)" stroke="#E63946" stroke-width="3" />
+              <!-- Water level -->
+              <ellipse cx="125" cy="220" rx="35" ry="12" fill="rgba(168,218,220,0.45)" />
+              
+              <!-- Stems -->
+              <path class="flower-stem" d="M125 210 Q100 130 80 80" stroke="#52B788" stroke-width="6" stroke-linecap="round" />
+              <path class="flower-stem" d="M125 210 Q125 120 125 60" stroke="#52B788" stroke-width="6" stroke-linecap="round" />
+              <path class="flower-stem" d="M125 210 Q150 130 170 75" stroke="#52B788" stroke-width="6" stroke-linecap="round" />
+
+              <!-- Leaves -->
+              <path d="M100 150 Q75 140 85 160 Z" fill="#52B788" />
+              <path d="M145 150 Q170 140 160 160 Z" fill="#52B788" />
+
+              <!-- Left Rose (Pink) -->
+              <g class="flower-interactive" data-msg="You make every single day brighter! 🌸">
+                <circle cx="80" cy="80" r="24" fill="#FF85A1" />
+                <circle class="flower-petal" cx="72" cy="72" r="10" fill="#FF4D6D" />
+                <circle class="flower-petal" cx="88" cy="72" r="10" fill="#FF4D6D" />
+                <circle class="flower-petal" cx="88" cy="88" r="10" fill="#FF4D6D" />
+                <circle class="flower-petal" cx="72" cy="88" r="10" fill="#FF4D6D" />
+                <circle cx="80" cy="80" r="8" fill="#FFB703" />
+              </g>
+
+              <!-- Center Rose (Red) -->
+              <g class="flower-interactive" data-msg="Counting down the days until I can hug you! 🌷">
+                <circle cx="125" cy="60" r="28" fill="#E63946" />
+                <circle class="flower-petal" cx="115" cy="50" r="12" fill="#D80032" />
+                <circle class="flower-petal" cx="135" cy="50" r="12" fill="#D80032" />
+                <circle class="flower-petal" cx="135" cy="70" r="12" fill="#D80032" />
+                <circle class="flower-petal" cx="115" cy="70" r="12" fill="#D80032" />
+                <circle cx="125" cy="60" r="9" fill="#FFB703" />
+              </g>
+
+              <!-- Right Daisy (Yellow/Gold) -->
+              <g class="flower-interactive" data-msg="You are my favorite person in the universe! 💖">
+                <circle cx="170" cy="75" r="24" fill="#FFB703" />
+                <circle class="flower-petal" cx="160" cy="65" r="10" fill="#FFF" />
+                <circle class="flower-petal" cx="180" cy="65" r="10" fill="#FFF" />
+                <circle class="flower-petal" cx="180" cy="85" r="10" fill="#FFF" />
+                <circle class="flower-petal" cx="160" cy="85" r="10" fill="#FFF" />
+                <circle cx="170" cy="75" r="8" fill="#FF85A1" />
+              </g>
+            </svg>
+          </div>
+
+          <div class="love-note-bubble" id="flower-note-display">
+            ✨ Click on any flower to reveal a sweet message! ✨
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         3D. SUB-VIEW: BIRTHDAY LOCK & SECRET UNLOCKED SURPRISE
+         =================================================================== -->
+    <section id="lock-view" class="view-section">
+      <div class="sub-view-container">
+        <button class="back-btn btn-back-menu">🏠 Back to Main Menu</button>
+        
+        <!-- Lock Input Form -->
+        <div class="lock-box" id="lock-box-container">
+          <div class="lock-icon-big">🔐</div>
+          <h2 class="lock-title text-shimmer">Enter Her Birthday Date</h2>
+          <p class="lock-desc">Input the special date to unlock the secret final surprise!</p>
+
+          <div class="date-input-group">
+            <input type="date" id="birthday-date-input" class="date-picker-custom" required>
+            <button id="btn-unlock-date" class="btn-primary" style="width: 100%; justify-content: center;">Unlock Surprise ✨</button>
+          </div>
+
+          <div class="lock-feedback" id="lock-feedback"></div>
+          
+          <button id="btn-set-custom-date" style="background: none; border: none; color: var(--text-muted); font-size: 0.85rem; margin-top: 14px; cursor: pointer; text-decoration: underline;">
+            Target Date Setup (Default: July 24)
+          </button>
+        </div>
+
+        <!-- SECRET UNLOCKED SECTION ("OUR FUTURE PLANS") -->
+        <div class="unlocked-section" id="unlocked-section">
+          <div class="unlocked-header">
+            <h2 class="unlocked-title text-shimmer">One last surprise...</h2>
+            <p style="font-size: 1.3rem; color: var(--accent-red); font-family: var(--font-handwriting); font-weight: 700;">
+              ✨ Our Future Plans ✨
+            </p>
+
+            <!-- Reunion Countdown Timer Widget -->
+            <div class="countdown-box">
+              <div class="countdown-unit">
+                <div class="countdown-num" id="cd-days">30</div>
+                <div class="countdown-label">Days</div>
+              </div>
+              <div style="font-family: var(--font-handwriting); font-size: 1.8rem; color: var(--accent-red);">:</div>
+              <div class="countdown-unit">
+                <div class="countdown-num" id="cd-hours">14</div>
+                <div class="countdown-label">Hours</div>
+              </div>
+              <div style="font-family: var(--font-handwriting); font-size: 1.8rem; color: var(--accent-red);">:</div>
+              <div class="countdown-unit">
+                <div class="countdown-num" id="cd-mins">25</div>
+                <div class="countdown-label">Mins</div>
+              </div>
+              <div style="font-family: var(--font-handwriting); font-size: 1.8rem; color: var(--accent-red);">:</div>
+              <div class="countdown-unit">
+                <div class="countdown-num" id="cd-secs">42</div>
+                <div class="countdown-label">Secs</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="milestones-grid">
+            <!-- Card 1: The First Hug -->
+            <article class="milestone-card" id="milestone-1">
+              <div class="milestone-icon">✈️</div>
+              <h3 class="milestone-title">The First Hug</h3>
+              <p class="milestone-quote">"No more screens. Just you and me."</p>
+            </article>
+
+            <!-- Card 2: Our Little Home -->
+            <article class="milestone-card" id="milestone-2">
+              <div class="milestone-icon">🏡</div>
+              <h3 class="milestone-title">Our Little Home</h3>
+              <p class="milestone-quote">"Simple mornings. Late-night talks."</p>
+            </article>
+
+            <!-- Card 3: Side by Side -->
+            <article class="milestone-card" id="milestone-3">
+              <div class="milestone-icon">🌌</div>
+              <h3 class="milestone-title">Side by Side</h3>
+              <p class="milestone-quote">"New places. Same love."</p>
+            </article>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================
+       PHOTO LIGHTBOX MODAL OVERLAY
+       =================================================================== -->
+  <div class="lightbox-modal" id="lightbox-modal">
+    <div class="lightbox-card">
+      <button class="modal-close-btn" id="btn-close-lightbox">&times;</button>
+      <button class="lightbox-nav-btn lightbox-prev" id="btn-lightbox-prev">&#10094;</button>
+      <button class="lightbox-nav-btn lightbox-next" id="btn-lightbox-next">&#10095;</button>
+      
+      <img src="" alt="Enlarged Photo" class="lightbox-img-large" id="lightbox-img">
+      <div class="lightbox-caption-text" id="lightbox-caption"></div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MILESTONE DETAIL MODAL OVERLAY
+       =================================================================== -->
+  <div class="modal-overlay" id="milestone-modal">
+    <div class="modal-content-card">
+      <button class="modal-close-btn" id="btn-close-modal">&times;</button>
+      <div id="modal-body-content"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
