@@ -40,6 +40,160 @@ document.addEventListener('DOMContentLoaded', () => {
     { src: 'assets/images/IMG_20260720_110613.jpg', caption: 'Birthday Month Celebration 🎂', sticker: '🎂' }
   ];
 
+  // =========================================================================
+  // AUTOMATIC MODERN CINEMATIC BACKGROUND SLIDESHOW ENGINE
+  // =========================================================================
+  const slideshowImages = allUserPhotos.map(p => p.src);
+
+  // Fisher-Yates Shuffle Algorithm for Random Order on App Start
+  function shuffleArray(arr) {
+    const array = [...arr];
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  let shuffledSlides = shuffleArray(slideshowImages);
+  let currentIndex = 0;
+  let isPaused = false;
+  let isMosaicMode = false;
+  let slideshowTimer = null;
+  const SLIDE_INTERVAL = 3000; // Automatically changes every 3 seconds
+
+  const layerA = document.getElementById('slide-layer-a');
+  const layerB = document.getElementById('slide-layer-b');
+  const mosaicGrid = document.getElementById('slideshow-collage-grid');
+  const counterEl = document.getElementById('bg-slideshow-counter');
+  const btnPause = document.getElementById('btn-bg-pause');
+  const btnNext = document.getElementById('btn-bg-next');
+  const btnMode = document.getElementById('btn-bg-mode');
+
+  let activeLayer = layerA;
+  let nextLayer = layerB;
+
+  // Preload Image Buffer to prevent any lag, flashing or white flickers
+  const imageCache = {};
+  function preloadImage(url) {
+    if (!url || imageCache[url]) return;
+    const img = new Image();
+    img.src = url;
+    imageCache[url] = img;
+  }
+
+  // Preload all 29 images in advance
+  shuffledSlides.forEach(url => preloadImage(url));
+
+  function updateCounter() {
+    if (counterEl) {
+      counterEl.textContent = `${currentIndex + 1} / ${shuffledSlides.length}`;
+    }
+  }
+
+  function renderSlide(index) {
+    if (shuffledSlides.length === 0) return;
+    const nextUrl = shuffledSlides[index];
+
+    // Preload next image in advance
+    const peekNextIndex = (index + 1) % shuffledSlides.length;
+    preloadImage(shuffledSlides[peekNextIndex]);
+
+    if (isMosaicMode) {
+      renderMosaicGrid(index);
+      return;
+    }
+
+    if (mosaicGrid) mosaicGrid.classList.remove('active');
+
+    // Set background image on next buffer layer
+    if (nextLayer) {
+      nextLayer.style.backgroundImage = `url('${nextUrl}')`;
+
+      // Trigger hardware-accelerated smooth 1.1s crossfade transition
+      activeLayer.classList.remove('active');
+      nextLayer.classList.add('active');
+
+      // Swap buffer references
+      const temp = activeLayer;
+      activeLayer = nextLayer;
+      nextLayer = temp;
+    }
+
+    updateCounter();
+  }
+
+  function renderMosaicGrid(startIndex) {
+    if (!mosaicGrid) return;
+    mosaicGrid.innerHTML = '';
+
+    // Select 8 images starting from startIndex to form clean 4x2 mosaic collage
+    for (let i = 0; i < 8; i++) {
+      const imgIdx = (startIndex + i) % shuffledSlides.length;
+      const item = document.createElement('div');
+      item.className = 'collage-item';
+      item.innerHTML = `<img src="${shuffledSlides[imgIdx]}" alt="Background Mosaic Memory" loading="lazy">`;
+      mosaicGrid.appendChild(item);
+    }
+
+    mosaicGrid.classList.add('active');
+    if (layerA) layerA.classList.remove('active');
+    if (layerB) layerB.classList.remove('active');
+    updateCounter();
+  }
+
+  function advanceSlide() {
+    if (isPaused) return;
+    currentIndex = (currentIndex + 1) % shuffledSlides.length;
+    renderSlide(currentIndex);
+  }
+
+  function startSlideshow() {
+    stopSlideshow();
+    slideshowTimer = setInterval(advanceSlide, SLIDE_INTERVAL);
+  }
+
+  function stopSlideshow() {
+    if (slideshowTimer) {
+      clearInterval(slideshowTimer);
+      slideshowTimer = null;
+    }
+  }
+
+  // Initialize First Slide & Start Slideshow
+  renderSlide(0);
+  startSlideshow();
+
+  // Control Bar Listeners
+  if (btnPause) {
+    btnPause.addEventListener('click', () => {
+      isPaused = !isPaused;
+      btnPause.textContent = isPaused ? '▶️' : '⏸️';
+      btnPause.setAttribute('title', isPaused ? 'Resume Slideshow' : 'Pause Slideshow');
+    });
+  }
+
+  if (btnNext) {
+    btnNext.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % shuffledSlides.length;
+      renderSlide(currentIndex);
+      if (!isPaused) startSlideshow();
+    });
+  }
+
+  if (btnMode) {
+    btnMode.addEventListener('click', () => {
+      isMosaicMode = !isMosaicMode;
+      btnMode.textContent = isMosaicMode ? '🖼️ Single' : '🧩 Collage';
+      if (isMosaicMode) {
+        renderMosaicGrid(currentIndex);
+      } else {
+        if (mosaicGrid) mosaicGrid.classList.remove('active');
+        renderSlide(currentIndex);
+      }
+    });
+  }
+
   // Render All 29 Polaroid Cards dynamically
   const polaroidContainer = document.getElementById('polaroid-container');
   if (polaroidContainer) {
