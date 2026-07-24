@@ -258,6 +258,8 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         activeView.classList.add('active');
       }, 50);
+    }
+
     if (targetViewId === 'letter') {
       startAutoTypewriterLetter();
     }
@@ -269,27 +271,44 @@ document.addEventListener('DOMContentLoaded', () => {
   handleSectionVideos('landing');
 
   // Bind Yes Button on Landing Screen
-  document.getElementById('btn-yes')?.addEventListener('click', () => {
-    triggerConfetti(45);
-    playChimeMelody([523.25, 659.25, 783.99, 1046.50]);
-    switchView('mainMenu');
-  });
+  const btnYes = document.getElementById('btn-yes');
+  if (btnYes) {
+    btnYes.addEventListener('click', (e) => {
+      e.preventDefault();
+      triggerConfetti(45);
+      playChimeMelody([523.25, 659.25, 783.99, 1046.50]);
+      switchView('mainMenu');
+    });
+  }
 
   // Bind Back Buttons
   document.querySelectorAll('.btn-back-menu').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
       switchView('mainMenu');
     });
   });
 
   // Bind Main Menu Cards
-  document.getElementById('card-photos')?.addEventListener('click', () => switchView('photos'));
-  document.getElementById('card-letter')?.addEventListener('click', () => switchView('letter'));
-  document.getElementById('card-flowers')?.addEventListener('click', () => switchView('flowers'));
-  document.getElementById('card-lock')?.addEventListener('click', () => switchView('lock'));
+  document.getElementById('card-photos')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    switchView('photos');
+  });
+  document.getElementById('card-letter')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    switchView('letter');
+  });
+  document.getElementById('card-flowers')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    switchView('flowers');
+  });
+  document.getElementById('card-lock')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    switchView('lock');
+  });
 
   // =========================================================================
-  // 3. PLAYFUL EVASIVE "NO THANKS" BUTTON LOGIC
+  // 3. PLAYFUL "NO THANKS" BUTTON LOGIC
   // =========================================================================
   const btnNo = document.getElementById('btn-no');
   
@@ -303,16 +322,16 @@ document.addEventListener('DOMContentLoaded', () => {
   let playfulIndex = 0;
 
   if (btnNo) {
-    const handleNoAction = (e) => {
+    btnNo.addEventListener('click', (e) => {
       e.preventDefault();
       
       if (playfulIndex < playfulMessages.length) {
         btnNo.textContent = playfulMessages[playfulIndex];
         playfulIndex++;
 
-        const randomX = (Math.random() - 0.5) * 90;
-        const randomY = (Math.random() - 0.5) * 45;
-        btnNo.style.transform = `translate(${randomX}px, ${randomY}px) scale(1.08)`;
+        const randomX = (Math.random() - 0.5) * 60;
+        const randomY = (Math.random() - 0.5) * 30;
+        btnNo.style.transform = `translate(${randomX}px, ${randomY}px) scale(1.06)`;
         
         playChimeNote(300 + playfulIndex * 50);
 
@@ -327,10 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playChimeMelody([523.25, 659.25, 783.99, 1046.50]);
         switchView('mainMenu');
       }
-    };
-
-    btnNo.addEventListener('mouseover', handleNoAction);
-    btnNo.addEventListener('click', handleNoAction);
+    });
   }
 
   // Cat Wrapper Click Interaction
@@ -1152,5 +1168,4 @@ I love you more than words can say. Always. ❤️`;
 
     animateParticles();
   }
-
 });

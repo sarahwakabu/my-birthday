@@ -529,6 +529,16 @@ body {
   align-items: center;
   min-height: 70px;
   position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.btn-primary,
+.btn-secondary-playful {
+  position: relative;
+  z-index: 11;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 
 .btn-primary {
