@@ -231,6 +231,19 @@ document.addEventListener('DOMContentLoaded', () => {
     lock: document.getElementById('lock-view')
   };
 
+  function handleSectionVideos(targetViewId) {
+    document.querySelectorAll('.section-bg-video').forEach(video => {
+      const activeContainer = views[targetViewId];
+      if (activeContainer && activeContainer.contains(video)) {
+        video.currentTime = 0;
+        const p = video.play();
+        if (p !== undefined) p.catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }
+
   function switchView(targetViewId) {
     Object.values(views).forEach(view => {
       if (view) {
@@ -246,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activeView.classList.add('active');
       }, 50);
     }
+    handleSectionVideos(targetViewId);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -782,6 +796,12 @@ Always & Forever Yours,`;
         if (lockBoxContainer) lockBoxContainer.style.display = 'none';
         if (unlockedSection) {
           unlockedSection.style.display = 'flex';
+          const uVid = unlockedSection.querySelector('.section-bg-video');
+          if (uVid) {
+            uVid.currentTime = 0;
+            const p = uVid.play();
+            if (p !== undefined) p.catch(() => {});
+          }
           setTimeout(() => unlockedSection.classList.add('active'), 50);
         }
       }, 800);
