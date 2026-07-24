@@ -258,6 +258,8 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         activeView.classList.add('active');
       }, 50);
+    if (targetViewId === 'letter') {
+      startAutoTypewriterLetter();
     }
     handleSectionVideos(targetViewId);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -678,10 +680,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 7. LOVE LETTER NOTEPAD & TYPEWRITER MODE
+  // 7. LOVE LETTER NOTEPAD & AUTOMATIC TYPEWRITER MODE
   // =========================================================================
   const letterBodyText = document.getElementById('letter-body-text');
-  const btnTypewriter = document.getElementById('btn-typewriter');
   const btnEditLetter = document.getElementById('btn-edit-letter');
 
   const fullLetterContent = `Happy Birthday to the most amazing person in my life. 🎂
@@ -705,23 +706,24 @@ Happy Birthday once again, my love.
 
 I love you more than words could ever express. ❤️`;
 
-  if (btnTypewriter && letterBodyText) {
-    btnTypewriter.addEventListener('click', () => {
-      letterBodyText.textContent = '';
-      let i = 0;
-      btnTypewriter.disabled = true;
+  let autoTypewriterInterval = null;
 
-      const typeInterval = setInterval(() => {
-        if (i < fullLetterContent.length) {
-          letterBodyText.textContent += fullLetterContent.charAt(i);
-          i++;
-          if (i % 12 === 0) playChimeNote(600 + (i % 5) * 40, 0.1);
-        } else {
-          clearInterval(typeInterval);
-          btnTypewriter.disabled = false;
-        }
-      }, 35);
-    });
+  function startAutoTypewriterLetter() {
+    if (!letterBodyText) return;
+    if (autoTypewriterInterval) clearInterval(autoTypewriterInterval);
+
+    letterBodyText.textContent = '';
+    let i = 0;
+
+    autoTypewriterInterval = setInterval(() => {
+      if (i < fullLetterContent.length) {
+        letterBodyText.textContent += fullLetterContent.charAt(i);
+        i++;
+        if (i % 12 === 0) playChimeNote(600 + (i % 5) * 40, 0.1);
+      } else {
+        clearInterval(autoTypewriterInterval);
+      }
+    }, 28);
   }
 
   if (btnEditLetter && letterBodyText) {
