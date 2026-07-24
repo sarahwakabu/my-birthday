@@ -394,11 +394,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =========================================================================
-  // 5. BACKGROUND MUSIC & AUDIO SYNTHESIZER
+  // 5. LOCAL BACKGROUND MUSIC PLAYER & AUDIO SYNTHESIZER
   // =========================================================================
   const audioBtn = document.getElementById('audio-toggle-btn');
   const audioIcon = document.getElementById('audio-icon');
   const audioLabel = document.getElementById('audio-label');
+  const bgAudio = document.getElementById('bg-audio');
+
+  let fadeInterval = null;
+  const TARGET_VOLUME = 0.35;
+  const FADE_DURATION = 2000; // 2 seconds
 
   function initAudio() {
     if (!audioContext) {
@@ -438,38 +443,106 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const ambientScale = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
-  function startAmbientMusic() {
-    initAudio();
-    isMusicPlaying = true;
-    if (audioIcon) audioIcon.textContent = '🎶';
-    if (audioLabel) audioLabel.textContent = 'Music: On';
-
-    let noteIndex = 0;
-    musicInterval = setInterval(() => {
-      if (!isMusicPlaying) return;
-      const freq = ambientScale[noteIndex % ambientScale.length];
-      playChimeNote(freq, 1.2);
-      noteIndex = (noteIndex + Math.floor(Math.random() * 3) + 1) % ambientScale.length;
-    }, 1800);
+  function updateAudioButtonUI(playing) {
+    isMusicPlaying = playing;
+    if (audioIcon) audioIcon.textContent = '🎵';
+    if (audioLabel) audioLabel.textContent = playing ? 'Music: ON' : 'Music: OFF';
+    if (audioBtn) {
+      if (playing) {
+        audioBtn.classList.add('playing');
+      } else {
+        audioBtn.classList.remove('playing');
+      }
+    }
   }
 
-  function stopAmbientMusic() {
-    isMusicPlaying = false;
-    if (musicInterval) clearInterval(musicInterval);
-    if (audioIcon) audioIcon.textContent = '🎵';
-    if (audioLabel) audioLabel.textContent = 'Music: Off';
+  function playMusicWithFadeIn() {
+    if (!bgAudio) return;
+    if (fadeInterval) clearInterval(fadeInterval);
+
+    bgAudio.loop = true;
+    bgAudio.volume = 0;
+    
+    const playPromise = bgAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        updateAudioButtonUI(true);
+        const startTime = Date.now();
+        fadeInterval = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          if (elapsed >= FADE_DURATION) {
+            bgAudio.volume = TARGET_VOLUME;
+            clearInterval(fadeInterval);
+            fadeInterval = null;
+          } else {
+            bgAudio.volume = (elapsed / FADE_DURATION) * TARGET_VOLUME;
+          }
+        }, 50);
+      }).catch(err => {
+        // Autoplay policy prevented playback silently
+        updateAudioButtonUI(false);
+      });
+    }
+  }
+
+  function pauseMusicWithFadeOut() {
+    if (!bgAudio) return;
+    if (fadeInterval) clearInterval(fadeInterval);
+
+    const startVolume = bgAudio.volume;
+    const startTime = Date.now();
+
+    updateAudioButtonUI(false);
+
+    fadeInterval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      if (elapsed >= FADE_DURATION) {
+        bgAudio.volume = 0;
+        bgAudio.pause();
+        clearInterval(fadeInterval);
+        fadeInterval = null;
+      } else {
+        bgAudio.volume = Math.max(0, startVolume * (1 - elapsed / FADE_DURATION));
+      }
+    }, 50);
+  }
+
+  function toggleMusic() {
+    if (isMusicPlaying) {
+      pauseMusicWithFadeOut();
+    } else {
+      playMusicWithFadeIn();
+    }
   }
 
   if (audioBtn) {
-    audioBtn.addEventListener('click', () => {
-      if (isMusicPlaying) {
-        stopAmbientMusic();
-      } else {
-        startAmbientMusic();
-      }
+    audioBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMusic();
     });
   }
+
+  // Attempt Autoplay on page load & fallback to play on user's first click anywhere
+  let hasUserInteracted = false;
+  function handleFirstUserInteraction() {
+    if (hasUserInteracted) return;
+    hasUserInteracted = true;
+    if (!isMusicPlaying && bgAudio && bgAudio.paused) {
+      playMusicWithFadeIn();
+    }
+    document.removeEventListener('click', handleFirstUserInteraction);
+    document.removeEventListener('keydown', handleFirstUserInteraction);
+    document.removeEventListener('touchstart', handleFirstUserInteraction);
+  }
+
+  document.addEventListener('click', handleFirstUserInteraction);
+  document.addEventListener('keydown', handleFirstUserInteraction);
+  document.addEventListener('touchstart', handleFirstUserInteraction);
+
+  // Try autoplay immediately
+  setTimeout(() => {
+    playMusicWithFadeIn();
+  }, 150);
 
   // =========================================================================
   // 6. LIGHTBOX MODAL NAVIGATOR (ALL 29 PHOTOS)
@@ -506,6 +579,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('letter-attached-photo')?.addEventListener('click', () => {
     openLightbox(0);
+  });
+
+  document.querySelectorAll('.landing-polaroid').forEach(item => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('img');
+      if (img) {
+        const imgSrc = img.getAttribute('src');
+        const foundIdx = allUserPhotos.findIndex(p => p.src === imgSrc || imgSrc.includes(p.src));
+        if (foundIdx !== -1) {
+          openLightbox(foundIdx);
+        } else if (lightboxImg && lightboxCaption && lightboxModal) {
+          lightboxImg.src = img.src;
+          lightboxCaption.textContent = img.alt || 'Sweet Memories 💕';
+          lightboxModal.classList.add('active');
+          playChimeNote(523.25, 0.2);
+        }
+      }
+    });
   });
 
   if (btnLightboxPrev) {

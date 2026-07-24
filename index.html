@@ -63,84 +63,158 @@
     </div>
 
     <!-- Background Music / Ambient Audio Toggle -->
+    <audio id="bg-audio" src="music/WhatsApp Audio 2026-07-24 at 03.44.11.aac" loop preload="auto"></audio>
     <button id="audio-toggle-btn" class="audio-control-btn" aria-label="Toggle background music">
-      <span id="audio-icon">🎵</span> <span id="audio-label">Music: Off</span>
+      <span id="audio-icon">🎵</span> <span id="audio-label">Music: OFF</span>
     </button>
 
     <!-- ===================================================================
-         1. LANDING SCREEN VIEW WITH CAT & BLOWABLE BIRTHDAY CAKE
+         1. LANDING SCREEN VIEW WITH CAT & BLOWABLE BIRTHDAY CAKE & PHOTOS
          =================================================================== -->
     <section id="landing-view" class="view-section active">
-      <div class="landing-content">
-        <div class="paper-tape-top"></div>
+      <div class="landing-photos-container">
         
-        <!-- Cat Graphic & Blowable Birthday Cake Wrapper -->
-        <div class="cat-cake-wrapper">
-          <!-- Animated Cat SVG -->
-          <div class="cat-graphic-wrapper" id="cat-wrapper" title="Click me for a meow!">
-            <div class="floating-heart-cat">💖</div>
-            <svg class="cat-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Cat Body -->
-              <ellipse cx="100" cy="140" rx="60" ry="45" fill="#FFC8DD" />
-              <!-- Cat Head -->
-              <circle cx="100" cy="90" r="50" fill="#FFC8DD" />
-              <!-- Cat Ears -->
-              <polygon points="60,55 40,15 75,40" fill="#FF85A1" />
-              <polygon points="63,50 48,22 72,40" fill="#FFA6C1" />
-              <polygon points="140,55 160,15 125,40" fill="#FF85A1" />
-              <polygon points="137,50 152,22 128,40" fill="#FFA6C1" />
-              <!-- Cat Eyes -->
-              <circle class="cat-eye-left" cx="80" cy="85" r="7" fill="#2B2D42" />
-              <circle class="cat-eye-right" cx="120" cy="85" r="7" fill="#2B2D42" />
-              <circle cx="78" cy="83" r="2.5" fill="#FFF" />
-              <circle cx="118" cy="83" r="2.5" fill="#FFF" />
-              <!-- Cat Cheeks -->
-              <ellipse cx="70" cy="95" rx="8" ry="5" fill="#FF6B8B" opacity="0.6" />
-              <ellipse cx="130" cy="95" rx="8" ry="5" fill="#FF6B8B" opacity="0.6" />
-              <!-- Cat Nose & Mouth -->
-              <polygon points="100,92 95,97 105,97" fill="#E63946" />
-              <path d="M95 100 Q100 106 105 100" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" fill="none" />
-              <!-- Cat Whiskers -->
-              <line x1="50" y1="88" x2="25" y2="85" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
-              <line x1="50" y1="95" x2="25" y2="97" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
-              <line x1="150" y1="88" x2="175" y2="85" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
-              <line x1="150" y1="95" x2="175" y2="97" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
-              <!-- Cat Paws -->
-              <ellipse class="cat-paw-left" cx="70" cy="140" rx="14" ry="10" fill="#FFF0F3" />
-              <ellipse class="cat-paw-right" cx="130" cy="140" rx="14" ry="10" fill="#FFF0F3" />
-              <!-- Cat Tail -->
-              <path class="cat-tail" d="M150 150 C180 150 190 110 175 90" stroke="#FF85A1" stroke-width="14" stroke-linecap="round" fill="none" />
-            </svg>
+        <!-- Left Side Polaroid Memories Wall -->
+        <div class="landing-photos-side photos-left">
+          <div class="landing-polaroid" style="--rot: -7deg; --delay: 0s;">
+            <div class="polaroid-pin"></div>
+            <div class="polaroid-img-box">
+              <img src="assets/images/177a155cee575e2bf58e94919bc8c18d_0.jpeg" alt="Sweet Memory">
+            </div>
           </div>
-
-          <!-- Interactive Blowable Birthday Cake -->
-          <div class="cake-widget" id="cake-widget" title="Click to blow out the birthday candle & make a wish!">
-            <div class="candle-flame" id="candle-flame"></div>
-            <div class="candle-smoke" id="candle-smoke">💨✨</div>
-            <svg viewBox="0 0 100 100" width="100%" height="100%">
-              <!-- Candle wick & stick -->
-              <line x1="50" y1="28" x2="50" y2="40" stroke="#2B2D42" stroke-width="2" />
-              <rect x="47" y="38" width="6" height="16" fill="#FF85A1" rx="2" />
-              <!-- Cake top layer -->
-              <rect x="25" y="54" width="50" height="18" fill="#FFC6C7" rx="4" />
-              <path d="M25 54 C30 60, 35 54, 40 60 C45 54, 50 60, 55 54 C60 60, 65 54, 70 60 C75 54, 75 54, 75 54" fill="none" stroke="#FFF" stroke-width="3" />
-              <!-- Cake bottom layer -->
-              <rect x="15" y="70" width="70" height="24" fill="#FF85A1" rx="6" />
-              <!-- Strawberries / Cherries on cake -->
-              <circle cx="28" cy="52" r="4" fill="#E63946" />
-              <circle cx="50" cy="52" r="4" fill="#E63946" />
-              <circle cx="72" cy="52" r="4" fill="#E63946" />
-            </svg>
+          <div class="landing-polaroid" style="--rot: 6deg; --delay: -1.5s;">
+            <div class="polaroid-pin"></div>
+            <div class="polaroid-img-box">
+              <img src="assets/images/IMG_20251026_140316.jpg" alt="October Magic">
+            </div>
+          </div>
+          <div class="landing-polaroid" style="--rot: -5deg; --delay: -3s;">
+            <div class="polaroid-pin"></div>
+            <div class="polaroid-img-box">
+              <img src="assets/images/IMG_20251115_121123.jpg" alt="Sweet Smiles">
+            </div>
+          </div>
+          <div class="landing-polaroid" style="--rot: 8deg; --delay: -4.5s;">
+            <div class="polaroid-pin"></div>
+            <div class="polaroid-img-box">
+              <img src="assets/images/IMG_20251119_123826.jpg" alt="Autumn Afternoon">
+            </div>
+          </div>
+          <div class="landing-polaroid" style="--rot: -6deg; --delay: -2s;">
+            <div class="polaroid-pin"></div>
+            <div class="polaroid-img-box">
+              <img src="assets/images/IMG_20251214_123917.jpg" alt="Winter Warmth">
+            </div>
           </div>
         </div>
 
-        <h1 class="landing-title text-shimmer">Hello my love!</h1>
-        <p class="landing-subtitle">Do you want to see your birthday gift?</p>
+        <!-- Center Greeting Section -->
+        <div class="landing-content">
+          <div class="paper-tape-top"></div>
+          
+          <!-- Cat Graphic & Blowable Birthday Cake Wrapper -->
+          <div class="cat-cake-wrapper">
+            <!-- Animated Cat SVG -->
+            <div class="cat-graphic-wrapper" id="cat-wrapper" title="Click me for a meow!">
+              <div class="floating-heart-cat">💖</div>
+              <svg class="cat-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Cat Body -->
+                <ellipse cx="100" cy="140" rx="60" ry="45" fill="#FFC8DD" />
+                <!-- Cat Head -->
+                <circle cx="100" cy="90" r="50" fill="#FFC8DD" />
+                <!-- Cat Ears -->
+                <polygon points="60,55 40,15 75,40" fill="#FF85A1" />
+                <polygon points="63,50 48,22 72,40" fill="#FFA6C1" />
+                <polygon points="140,55 160,15 125,40" fill="#FF85A1" />
+                <polygon points="137,50 152,22 128,40" fill="#FFA6C1" />
+                <!-- Cat Eyes -->
+                <circle class="cat-eye-left" cx="80" cy="85" r="7" fill="#2B2D42" />
+                <circle class="cat-eye-right" cx="120" cy="85" r="7" fill="#2B2D42" />
+                <circle cx="78" cy="83" r="2.5" fill="#FFF" />
+                <circle cx="118" cy="83" r="2.5" fill="#FFF" />
+                <!-- Cat Cheeks -->
+                <ellipse cx="70" cy="95" rx="8" ry="5" fill="#FF6B8B" opacity="0.6" />
+                <ellipse cx="130" cy="95" rx="8" ry="5" fill="#FF6B8B" opacity="0.6" />
+                <!-- Cat Nose & Mouth -->
+                <polygon points="100,92 95,97 105,97" fill="#E63946" />
+                <path d="M95 100 Q100 106 105 100" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" fill="none" />
+                <!-- Cat Whiskers -->
+                <line x1="50" y1="88" x2="25" y2="85" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
+                <line x1="50" y1="95" x2="25" y2="97" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
+                <line x1="150" y1="88" x2="175" y2="85" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
+                <line x1="150" y1="95" x2="175" y2="97" stroke="#2B2D42" stroke-width="2" stroke-linecap="round" />
+                <!-- Cat Paws -->
+                <ellipse class="cat-paw-left" cx="70" cy="140" rx="14" ry="10" fill="#FFF0F3" />
+                <ellipse class="cat-paw-right" cx="130" cy="140" rx="14" ry="10" fill="#FFF0F3" />
+                <!-- Cat Tail -->
+                <path class="cat-tail" d="M150 150 C180 150 190 110 175 90" stroke="#FF85A1" stroke-width="14" stroke-linecap="round" fill="none" />
+              </svg>
+            </div>
 
-        <div class="landing-buttons">
-          <button id="btn-yes" class="btn-primary">YES PLEASE 💕</button>
-          <button id="btn-no" class="btn-secondary-playful">NO THANKS 🙈</button>
+            <!-- Interactive Blowable Birthday Cake -->
+            <div class="cake-widget" id="cake-widget" title="Click to blow out the birthday candle & make a wish!">
+              <div class="candle-flame" id="candle-flame"></div>
+              <div class="candle-smoke" id="candle-smoke">💨✨</div>
+              <svg viewBox="0 0 100 100" width="100%" height="100%">
+                <!-- Candle wick & stick -->
+                <line x1="50" y1="28" x2="50" y2="40" stroke="#2B2D42" stroke-width="2" />
+                <rect x="47" y="38" width="6" height="16" fill="#FF85A1" rx="2" />
+                <!-- Cake top layer -->
+                <rect x="25" y="54" width="50" height="18" fill="#FFC6C7" rx="4" />
+                <path d="M25 54 C30 60, 35 54, 40 60 C45 54, 50 60, 55 54 C60 60, 65 54, 70 60 C75 54, 75 54, 75 54" fill="none" stroke="#FFF" stroke-width="3" />
+                <!-- Cake bottom layer -->
+                <rect x="15" y="70" width="70" height="24" fill="#FF85A1" rx="6" />
+                <!-- Strawberries / Cherries on cake -->
+                <circle cx="28" cy="52" r="4" fill="#E63946" />
+                <circle cx="50" cy="52" r="4" fill="#E63946" />
+                <circle cx="72" cy="52" r="4" fill="#E63946" />
+              </svg>
+            </div>
+          </div>
+
+          <h1 class="landing-title text-shimmer">Hello my love!</h1>
+          <p class="landing-subtitle">Do you want to see your birthday gift?</p>
+
+          <div class="landing-buttons">
+            <button id="btn-yes" class="btn-primary">YES PLEASE 💕</button>
+            <button id="btn-no" class="btn-secondary-playful">NO THANKS 🙈</button>
+          </div>
         </div>
+
+        <!-- Right Side Polaroid Memories Wall -->
+        <div class="landing-photos-side photos-right">
+          <div class="landing-polaroid" style="--rot: 7deg; --delay: -0.8s;">
+            <div class="polaroid-pin"></div>
+            <div class="polaroid-img-box">
+              <img src="assets/images/IMG_20260617_095026.jpg" alt="Summer Day">
+            </div>
+          </div>
+          <div class="landing-polaroid" style="--rot: -8deg; --delay: -2.3s;">
+            <div class="polaroid-pin"></div>
+            <div class="polaroid-img-box">
+              <img src="assets/images/IMG_20260703_133327.jpg" alt="Sunshine Smile">
+            </div>
+          </div>
+          <div class="landing-polaroid" style="--rot: 5deg; --delay: -3.8s;">
+            <div class="polaroid-pin"></div>
+            <div class="polaroid-img-box">
+              <img src="assets/images/IMG_20260629_092904.jpg" alt="Forever Love">
+            </div>
+          </div>
+          <div class="landing-polaroid" style="--rot: -4deg; --delay: -5s;">
+            <div class="polaroid-pin"></div>
+            <div class="polaroid-img-box">
+              <img src="assets/images/IMG_20260703_140553.jpg" alt="Every Moment">
+            </div>
+          </div>
+          <div class="landing-polaroid" style="--rot: 9deg; --delay: -1.8s;">
+            <div class="polaroid-pin"></div>
+            <div class="polaroid-img-box">
+              <img src="assets/images/IMG_20260720_110613.jpg" alt="Birthday Glow">
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 

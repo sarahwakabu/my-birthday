@@ -289,7 +289,7 @@ body {
 /* Main Container - Digital Notebook Card */
 .notebook-container {
   width: 100%;
-  max-width: 950px;
+  max-width: 1100px;
   min-height: 700px;
   background: var(--card-bg);
   border-radius: var(--radius-lg);
@@ -571,6 +571,117 @@ body {
 .btn-secondary-playful:hover {
   background: var(--bg-paper);
   border-color: var(--accent-red);
+}
+
+/* ==========================================================================
+   LANDING GREETING POLAROID PHOTOS LAYOUT
+   ========================================================================== */
+.landing-photos-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+  padding: 10px;
+}
+
+.landing-photos-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  flex: 0 0 150px;
+  z-index: 2;
+}
+
+.landing-polaroid {
+  position: relative;
+  width: 140px;
+  background: #FFFFFF;
+  padding: 8px 8px 18px 8px;
+  border-radius: 8px;
+  box-shadow: 0 14px 28px rgba(43, 45, 66, 0.12), 0 4px 10px rgba(0, 0, 0, 0.06);
+  transform: rotate(var(--rot, 0deg));
+  animation: floatPolaroidLanding 6s infinite ease-in-out alternate;
+  animation-delay: var(--delay, 0s);
+  transition: transform 0.35s var(--transition-bounce), box-shadow 0.35s ease, z-index 0.2s;
+  cursor: pointer;
+}
+
+.polaroid-pin {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 44px;
+  height: 15px;
+  background-color: var(--tape-color);
+  opacity: 0.9;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  z-index: 3;
+}
+
+.polaroid-img-box {
+  width: 100%;
+  height: 110px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #F4EBE3;
+}
+
+.polaroid-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.landing-polaroid:hover {
+  transform: scale(1.15) rotate(calc(var(--rot, 0deg) * 0.4)) translateY(-6px) !important;
+  box-shadow: 0 24px 44px rgba(230, 57, 70, 0.22), 0 8px 20px rgba(0, 0, 0, 0.12);
+  z-index: 20;
+}
+
+.landing-polaroid:hover .polaroid-img-box img {
+  transform: scale(1.08);
+}
+
+@keyframes floatPolaroidLanding {
+  0% {
+    transform: translateY(0px) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(-12px) rotate(calc(var(--rot, 0deg) + 2deg));
+  }
+  100% {
+    transform: translateY(8px) rotate(calc(var(--rot, 0deg) - 1.5deg));
+  }
+}
+
+/* Tablet Responsive Adjustment (769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .landing-photos-side {
+    flex: 0 0 115px;
+    gap: 12px;
+  }
+
+  .landing-polaroid {
+    width: 108px;
+    padding: 6px 6px 14px 6px;
+  }
+
+  .polaroid-img-box {
+    height: 85px;
+  }
+
+  .polaroid-pin {
+    width: 36px;
+    height: 13px;
+    top: -6px;
+  }
 }
 
 /* ==========================================================================
@@ -1303,6 +1414,36 @@ body {
     border: 5px solid #FFF;
   }
   
+  .landing-photos-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 5px;
+  }
+
+  .landing-photos-side {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    flex: unset;
+    width: 100%;
+  }
+
+  .landing-polaroid {
+    width: 95px;
+    padding: 5px 5px 12px 5px;
+  }
+
+  .polaroid-img-box {
+    height: 75px;
+  }
+
+  .polaroid-pin {
+    width: 32px;
+    height: 12px;
+    top: -5px;
+  }
+
   .cat-cake-wrapper {
     flex-direction: column;
     gap: 10px;
@@ -1327,7 +1468,7 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .landing-title { font-size: 3rem; }
+  .landing-title { font-size: 2.8rem; }
 
   .landing-buttons {
     flex-direction: column;
