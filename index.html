@@ -63,9 +63,9 @@
     </div>
 
     <!-- Background Music / Ambient Audio Toggle -->
-    <audio id="bg-audio" src="music/WhatsApp Audio 2026-07-24 at 03.44.11.aac" loop preload="auto"></audio>
-    <button id="audio-toggle-btn" class="audio-control-btn" aria-label="Toggle background music">
-      <span id="audio-icon">🎵</span> <span id="audio-label">Music: OFF</span>
+    <audio id="bg-audio" src="music/WhatsApp Audio 2026-07-24 at 03.44.11.aac" loop preload="auto" autoplay></audio>
+    <button id="audio-toggle-btn" class="audio-control-btn playing" aria-label="Toggle background music">
+      <span id="audio-icon">🎵</span> <span id="audio-label">Music: ON</span>
     </button>
 
     <!-- ===================================================================
@@ -250,7 +250,7 @@
           <div class="gift-card-tape"></div>
           <div class="gift-card-icon">🔐</div>
           <h3 class="gift-card-title">Secret Surprise</h3>
-          <p class="gift-card-desc">Requires entering your birthday date to unlock the secret!</p>
+          <p class="gift-card-desc">Requires answering a secret question to unlock!</p>
         </article>
 
         <!-- Card 4: Flower Bouquet -->
@@ -393,28 +393,30 @@ Always & Forever Yours,
     </section>
 
     <!-- ===================================================================
-         3D. SUB-VIEW: BIRTHDAY LOCK & SECRET UNLOCKED SURPRISE
+         3D. SUB-VIEW: SECRET QUESTION LOCK & UNLOCKED SURPRISE
          =================================================================== -->
     <section id="lock-view" class="view-section">
       <div class="sub-view-container">
         <button class="back-btn btn-back-menu">🏠 Back to Main Menu</button>
         
-        <!-- Lock Input Form -->
+        <!-- Secret Question Lock Input Form -->
         <div class="lock-box" id="lock-box-container">
-          <div class="lock-icon-big">🔐</div>
-          <h2 class="lock-title text-shimmer">Enter Her Birthday Date</h2>
-          <p class="lock-desc">Input the special date to unlock the secret final surprise!</p>
+          <div class="lock-icon-big">🔒</div>
+          <h2 class="lock-title text-shimmer">One Last Question</h2>
+          <p class="lock-subtitle-quote">"If you truly know me, you'll know the answer ❤️"</p>
 
-          <div class="date-input-group">
-            <input type="date" id="birthday-date-input" class="date-picker-custom" required>
-            <button id="btn-unlock-date" class="btn-primary" style="width: 100%; justify-content: center;">Unlock Surprise ✨</button>
+          <div class="secret-question-box">
+            <p class="lock-question-text">What is the name of our first-born child? 👶❤️</p>
+            
+            <div class="secret-input-wrapper">
+              <input type="password" id="secret-answer-input" class="secret-input-custom" placeholder="Enter your answer..." autocomplete="off" onpaste="return false;" spellcheck="false">
+              <button type="button" id="btn-toggle-eye" class="eye-toggle-btn" aria-label="Toggle password visibility" title="Show/Hide Answer">👁️</button>
+            </div>
+
+            <button id="btn-unlock-secret" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 16px;">✨ Unlock My Surprise ✨</button>
           </div>
 
           <div class="lock-feedback" id="lock-feedback"></div>
-          
-          <button id="btn-set-custom-date" style="background: none; border: none; color: var(--text-muted); font-size: 0.85rem; margin-top: 14px; cursor: pointer; text-decoration: underline;">
-            Target Date Setup (Default: July 24)
-          </button>
         </div>
 
         <!-- SECRET UNLOCKED SECTION ("OUR FUTURE PLANS") -->

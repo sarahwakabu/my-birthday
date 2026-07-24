@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================================================================
   let targetBirthdayDate = '2026-07-24';
   let audioContext = null;
-  let isMusicPlaying = false;
+  let isMusicPlaying = true;
   let musicInterval = null;
 
   const views = {
@@ -461,12 +461,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fadeInterval) clearInterval(fadeInterval);
 
     bgAudio.loop = true;
-    bgAudio.volume = 0;
+    updateAudioButtonUI(true);
     
     const playPromise = bgAudio.play();
     if (playPromise !== undefined) {
       playPromise.then(() => {
-        updateAudioButtonUI(true);
         const startTime = Date.now();
         fadeInterval = setInterval(() => {
           const elapsed = Date.now() - startTime;
@@ -479,8 +478,8 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }, 50);
       }).catch(err => {
-        // Autoplay policy prevented playback silently
-        updateAudioButtonUI(false);
+        // Autoplay policy prevented playback silently on load - keep Music ON intent active
+        // so any initial user gesture immediately triggers playback
       });
     }
   }
@@ -508,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function toggleMusic() {
-    if (isMusicPlaying) {
+    if (isMusicPlaying && bgAudio && !bgAudio.paused) {
       pauseMusicWithFadeOut();
     } else {
       playMusicWithFadeIn();
@@ -522,27 +521,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Attempt Autoplay on page load & fallback to play on user's first click anywhere
-  let hasUserInteracted = false;
+  // Ensure Music starts immediately on load and seamlessly on first gesture if browser blocks autoplay
   function handleFirstUserInteraction() {
-    if (hasUserInteracted) return;
-    hasUserInteracted = true;
-    if (!isMusicPlaying && bgAudio && bgAudio.paused) {
+    if (bgAudio && bgAudio.paused && isMusicPlaying) {
       playMusicWithFadeIn();
     }
-    document.removeEventListener('click', handleFirstUserInteraction);
-    document.removeEventListener('keydown', handleFirstUserInteraction);
-    document.removeEventListener('touchstart', handleFirstUserInteraction);
   }
 
-  document.addEventListener('click', handleFirstUserInteraction);
-  document.addEventListener('keydown', handleFirstUserInteraction);
-  document.addEventListener('touchstart', handleFirstUserInteraction);
+  ['click', 'pointerdown', 'touchstart', 'keydown'].forEach(evt => {
+    document.addEventListener(evt, handleFirstUserInteraction, { passive: true });
+  });
 
-  // Try autoplay immediately
-  setTimeout(() => {
-    playMusicWithFadeIn();
-  }, 150);
+  // Start music automatically on page load
+  playMusicWithFadeIn();
 
   // =========================================================================
   // 6. LIGHTBOX MODAL NAVIGATOR (ALL 29 PHOTOS)
@@ -734,66 +725,84 @@ Always & Forever Yours,`;
   });
 
   // =========================================================================
-  // 9. BIRTHDAY LOCK & SECRET SURPRISE UNLOCK LOGIC
+  // 9. SECRET QUESTION UNLOCK LOGIC ("What is the name of our first-born child?")
   // =========================================================================
-  const dateInput = document.getElementById('birthday-date-input');
-  const btnUnlockDate = document.getElementById('btn-unlock-date');
+  const secretInput = document.getElementById('secret-answer-input');
+  const btnUnlockSecret = document.getElementById('btn-unlock-secret');
+  const btnToggleEye = document.getElementById('btn-toggle-eye');
   const lockFeedback = document.getElementById('lock-feedback');
   const lockBoxContainer = document.getElementById('lock-box-container');
   const unlockedSection = document.getElementById('unlocked-section');
-  const btnSetCustomDate = document.getElementById('btn-set-custom-date');
 
-  if (dateInput) {
-    dateInput.value = targetBirthdayDate;
-  }
+  // Prevent pasting and handle live input reset
+  if (secretInput) {
+    secretInput.addEventListener('paste', (e) => e.preventDefault());
 
-  if (btnSetCustomDate) {
-    btnSetCustomDate.addEventListener('click', () => {
-      const customDate = prompt('Set the target birthday date (YYYY-MM-DD):', targetBirthdayDate);
-      if (customDate) {
-        targetBirthdayDate = customDate;
-        if (dateInput) dateInput.value = customDate;
-        alert(`Target birthday date updated to ${customDate}!`);
+    secretInput.addEventListener('input', () => {
+      secretInput.classList.remove('input-error');
+      if (lockFeedback) {
+        lockFeedback.textContent = '';
+        lockFeedback.className = 'lock-feedback';
+      }
+    });
+
+    secretInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        validateSecretAnswer();
       }
     });
   }
 
-  if (btnUnlockDate && dateInput) {
-    btnUnlockDate.addEventListener('click', () => {
-      const inputVal = dateInput.value;
-      const targetMonthDay = targetBirthdayDate.substring(5);
-      const inputMonthDay = inputVal ? inputVal.substring(5) : '';
+  // Toggle Password Visibility (Eye Icon)
+  if (btnToggleEye && secretInput) {
+    btnToggleEye.addEventListener('click', () => {
+      const isPassword = secretInput.getAttribute('type') === 'password';
+      secretInput.setAttribute('type', isPassword ? 'text' : 'password');
+      btnToggleEye.textContent = isPassword ? '🙈' : '👁️';
+    });
+  }
 
-      if (inputVal === targetBirthdayDate || inputMonthDay === targetMonthDay) {
-        if (lockFeedback) {
-          lockFeedback.className = 'lock-feedback success';
-          lockFeedback.textContent = '🎉 Unlocked! Welcome to your secret surprise!';
+  function validateSecretAnswer() {
+    if (!secretInput) return;
+    const answer = secretInput.value ? secretInput.value.trim().toLowerCase() : '';
+
+    if (answer === 'adams') {
+      if (lockFeedback) {
+        lockFeedback.className = 'lock-feedback success';
+        lockFeedback.textContent = '🎉 Correct! Welcome to your secret surprise!';
+      }
+
+      secretInput.classList.remove('input-error');
+      playChimeMelody([523.25, 659.25, 783.99, 1046.50, 1318.51]);
+      triggerConfetti(90);
+      createBurstHearts(btnUnlockSecret || secretInput);
+
+      setTimeout(() => {
+        if (lockBoxContainer) lockBoxContainer.style.display = 'none';
+        if (unlockedSection) {
+          unlockedSection.style.display = 'flex';
+          setTimeout(() => unlockedSection.classList.add('active'), 50);
         }
+      }, 800);
 
-        playChimeMelody([523.25, 659.25, 783.99, 1046.50, 1318.51]);
-        triggerConfetti(90);
+    } else {
+      if (lockFeedback) {
+        lockFeedback.className = 'lock-feedback error';
+        lockFeedback.textContent = "That's not our little one's name 🥺❤️ Try again.";
+      }
 
-        setTimeout(() => {
-          if (lockBoxContainer) lockBoxContainer.style.display = 'none';
-          if (unlockedSection) {
-            unlockedSection.style.display = 'flex';
-            setTimeout(() => unlockedSection.classList.add('active'), 50);
-          }
-        }, 800);
-
-      } else {
-        if (lockFeedback) {
-          lockFeedback.className = 'lock-feedback error';
-          lockFeedback.textContent = '❌ Oops! That date doesn\'t match her birthday. Try again!';
-        }
+      secretInput.classList.add('input-error');
+      if (lockBoxContainer) {
         lockBoxContainer.classList.add('shake-error');
-        playChimeNote(180, 0.4);
-
-        setTimeout(() => {
-          lockBoxContainer.classList.remove('shake-error');
-        }, 450);
+        setTimeout(() => lockBoxContainer.classList.remove('shake-error'), 450);
       }
-    });
+      playChimeNote(180, 0.4);
+    }
+  }
+
+  if (btnUnlockSecret) {
+    btnUnlockSecret.addEventListener('click', validateSecretAnswer);
   }
 
   // =========================================================================
