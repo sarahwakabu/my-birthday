@@ -1732,4 +1732,25 @@ body {
     width: 100%;
     justify-content: center;
   }
+
+  /* Lightweight Performance Optimizations for Mobile Phones */
+  .gift-card,
+  .lock-box,
+  .milestone-card,
+  .bouquet-container,
+  .letter-notepad {
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18) !important;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .bg-floating-polaroid {
+    animation: none !important;
+  }
+
+  .slideshow-layer,
+  .section-bg-video-wrapper {
+    transform: translate3d(0, 0, 0);
+  }
 }

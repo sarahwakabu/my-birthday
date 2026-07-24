@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
     imageCache[url] = img;
   }
 
-  // Preload all 29 images in advance
-  shuffledSlides.forEach(url => preloadImage(url));
+  // Preload initial 3 slideshow buffer images
+  shuffledSlides.slice(0, 3).forEach(url => preloadImage(url));
 
   function updateCounter() {
     if (counterEl) {
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="polaroid-tape"></div>
         <div class="polaroid-sticker">${photo.sticker}</div>
         <div class="polaroid-img-wrapper">
-          <img src="${photo.src}" alt="${photo.caption}" class="polaroid-img">
+          <img src="${photo.src}" alt="${photo.caption}" class="polaroid-img" loading="lazy">
         </div>
         <div class="polaroid-caption">${photo.caption}</div>
       `;
@@ -232,9 +232,14 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   function handleSectionVideos(targetViewId) {
+    const activeContainer = views[targetViewId];
     document.querySelectorAll('.section-bg-video').forEach(video => {
-      const activeContainer = views[targetViewId];
       if (activeContainer && activeContainer.contains(video)) {
+        const source = video.querySelector('source');
+        if (source && source.dataset.src && !source.src) {
+          source.src = source.dataset.src;
+          video.load();
+        }
         video.currentTime = 0;
         const p = video.play();
         if (p !== undefined) p.catch(() => {});
@@ -1134,13 +1139,15 @@ I love you more than words can say. Always. ❤️`;
       height = canvas.height = window.innerHeight;
     });
 
+    const isMobile = window.innerWidth < 768;
+    const numParticles = isMobile ? 10 : 22;
     const particles = [];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < numParticles; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 4 + 2,
-        speedY: Math.random() * 0.8 + 0.3,
+        radius: Math.random() * 3 + 2,
+        speedY: Math.random() * 0.7 + 0.3,
         opacity: Math.random() * 0.5 + 0.25,
         color: ['#FFC6C7', '#FF85A1', '#FFD166', '#C77DFF'][Math.floor(Math.random() * 4)]
       });
@@ -1168,4 +1175,13 @@ I love you more than words can say. Always. ❤️`;
 
     animateParticles();
   }
+
+  // Page Visibility API Optimization (Pause background processing when tab is backgrounded)
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopSlideshow();
+    } else if (!isPaused) {
+      startSlideshow();
+    }
+  });
 });
