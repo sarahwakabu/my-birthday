@@ -684,15 +684,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnTypewriter = document.getElementById('btn-typewriter');
   const btnEditLetter = document.getElementById('btn-edit-letter');
 
-  const fullLetterContent = `Happy Birthday to my favorite person in the entire world! 🎂
+  const fullLetterContent = `Happy Birthday to the most amazing person in my life. 🎂
 
-Even though miles and screens separate us today, my heart has never felt closer to anyone. Distance only proves how strong and genuine our love really is. Every video call, every late-night voice message, and every shared laugh means the universe to me.
+Even though we're apart today, not a single day goes by without you being in my thoughts. Distance has only made me appreciate you more and reminded me how lucky I am to have someone as wonderful as you.
 
-Thank you for bringing so much warmth, comfort, and happiness into my life. I am counting down every single second until I get to hold you tight and celebrate in person.
+Thank you for filling my life with love, laughter, and happiness. Every conversation, every smile you give me, and every moment we share becomes a memory I treasure deeply.
 
-Wishing you a day filled with all your favorite things, endless smiles, and joy!
+I can't wait for the day when I can celebrate your birthday beside you instead of through a screen. Until then, I hope this little website reminds you just how much you mean to me.
 
-Always & Forever Yours,`;
+I pray that this new year of your life brings you peace, good health, success, endless happiness, and every blessing your heart desires.
+
+Never forget this...
+
+You are loved.
+You are appreciated.
+You are beautiful.
+And you will always have a special place in my heart.
+
+Happy Birthday once again, my love.
+
+I love you more than words could ever express. ❤️`;
 
   if (btnTypewriter && letterBodyText) {
     btnTypewriter.addEventListener('click', () => {
