@@ -263,6 +263,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // Handle initial landing view video playback
+  handleSectionVideos('landing');
+
   // Bind Yes Button on Landing Screen
   document.getElementById('btn-yes')?.addEventListener('click', () => {
     triggerConfetti(45);
@@ -891,18 +894,23 @@ Always & Forever Yours,`;
       `
     },
     2: {
-      title: "Our Little Home 🏡",
-      subtitle: "Simple mornings. Late-night talks.",
+      isCustomModal: true,
+      title: "One of My Dream Houses 🏡",
+      subtitle: "Where I hope our forever begins. ❤️",
       body: `
-        <div style="text-align: center;">
-          <div style="font-size: 3.8rem; margin-bottom: 12px;">☕ 🐈 🛋️ 🕯️</div>
-          <h4 style="font-size: 1.5rem; color: var(--accent-red); margin-bottom: 14px;">Cozy Days Ahead</h4>
-          <p style="font-family: var(--font-handwriting); font-size: 1.7rem; color: var(--text-handwritten); line-height: 1.5;">
-            "I dream about making breakfast together in our kitchen, watching movies wrapped in the same blanket, and coming home to you every single evening."
-          </p>
-          <div style="margin-top: 22px; padding: 16px; background: var(--bg-paper); border-radius: 14px; font-size: 1rem; color: var(--text-muted);">
-            ✨ Dream Home Checklist: Cozy couch, plants everywhere, cat sleeping on the rug, and us.
+        <div class="dream-house-modal-content">
+          <div class="dream-house-img-box">
+            <img src="assets/images/12.png" alt="One of My Dream Houses" class="dream-house-img">
           </div>
+          
+          <h3 class="dream-house-title">🏡 One of My Dream Houses</h3>
+          
+          <div class="dream-house-text">
+            <p>"I don't dream about this house because it's beautiful—I dream about it because I imagine us living here. Morning hugs, late-night talks, movie nights, cooking together, and making every corner of this home a memory. ❤️"</p>
+            <p class="dream-house-promise">This is one of our future houses, I promise.</p>
+          </div>
+
+          <button type="button" class="btn-primary btn-close-dream-modal" id="btn-close-dream-house">Close ❤️</button>
         </div>
       `
     },
@@ -930,13 +938,21 @@ Always & Forever Yours,`;
     document.getElementById(`milestone-${id}`)?.addEventListener('click', () => {
       const data = milestoneData[id];
       if (data && modalBodyContent && milestoneModal) {
-        modalBodyContent.innerHTML = `
-          <h3 style="font-family: var(--font-handwriting); font-size: 3rem; color: var(--accent-red); margin-bottom: 4px;">${data.title}</h3>
-          <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px;">${data.subtitle}</p>
-          ${data.body}
-        `;
+        if (data.isCustomModal) {
+          modalBodyContent.innerHTML = data.body;
+          document.getElementById('btn-close-dream-house')?.addEventListener('click', () => {
+            milestoneModal.classList.remove('active');
+          });
+        } else {
+          modalBodyContent.innerHTML = `
+            <h3 style="font-family: var(--font-handwriting); font-size: 3rem; color: var(--accent-red); margin-bottom: 4px;">${data.title}</h3>
+            <p style="font-size: 1.05rem; color: var(--text-muted); margin-bottom: 20px;">${data.subtitle}</p>
+            ${data.body}
+          `;
+        }
         milestoneModal.classList.add('active');
         playChimeMelody([659.25, 783.99, 1046.50]);
+        createBurstHearts(modalBodyContent);
       }
     });
   });
