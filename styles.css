@@ -1144,6 +1144,69 @@ body {
   z-index: 5;
 }
 
+/* ==========================================================================
+   GLASSMORPHISM TRANSLUCENT CONTAINER SYSTEM FOR VIDEO SECTIONS
+   ========================================================================== */
+.gift-card,
+.lock-box,
+.milestone-card,
+.bouquet-container {
+  background: rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18) !important;
+  border-radius: 20px !important;
+  transition: transform 0.4s var(--transition-bounce), box-shadow 0.4s ease, background 0.35s ease, border-color 0.35s ease;
+  animation: fadeInGlass 0.6s ease forwards;
+}
+
+@keyframes fadeInGlass {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.gift-card:hover,
+.lock-box:hover,
+.milestone-card:hover {
+  background: rgba(255, 255, 255, 0.32) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 16px 40px rgba(230, 57, 70, 0.25), 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Enhanced Text Readability for Glass Containers */
+.gift-card-title,
+.gift-card-desc,
+.lock-title,
+.lock-subtitle-quote,
+.lock-question-text,
+.milestone-title,
+.milestone-quote {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+.gift-card-title,
+.milestone-title {
+  color: #FFFFFF !important;
+  font-weight: 700;
+}
+
+.gift-card-desc {
+  color: #F0E6DF !important;
+}
+
+.milestone-quote {
+  color: #FFC6C7 !important;
+}
+
+.lock-subtitle-quote {
+  color: #F0E6DF !important;
+}
+
+.lock-question-text {
+  color: #FFFFFF !important;
+}
+
 .section-bg-video-wrapper {
   position: absolute;
   top: 0;
