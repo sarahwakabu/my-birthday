@@ -829,43 +829,7 @@ Always & Forever Yours,`;
   }
 
   // =========================================================================
-  // 10. REUNION COUNTDOWN TIMER
-  // =========================================================================
-  function updateCountdownTimer() {
-    const cdDays = document.getElementById('cd-days');
-    const cdHours = document.getElementById('cd-hours');
-    const cdMins = document.getElementById('cd-mins');
-    const cdSecs = document.getElementById('cd-secs');
-
-    if (!cdDays) return;
-
-    const reunionDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-
-    function tick() {
-      const now = new Date();
-      const diff = reunionDate - now;
-
-      if (diff > 0) {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const mins = Math.floor((diff / 1000 / 60) % 60);
-        const secs = Math.floor((diff / 1000) % 60);
-
-        cdDays.textContent = days.toString().padStart(2, '0');
-        cdHours.textContent = hours.toString().padStart(2, '0');
-        cdMins.textContent = mins.toString().padStart(2, '0');
-        cdSecs.textContent = secs.toString().padStart(2, '0');
-      }
-    }
-
-    tick();
-    setInterval(tick, 1000);
-  }
-
-  updateCountdownTimer();
-
-  // =========================================================================
-  // 11. SECRET UNLOCKED MILESTONE CARDS & MODALS
+  // 11. SECRET UNLOCKED MILESTONE CARDS & GIFT MODALS
   // =========================================================================
   const milestoneModal = document.getElementById('milestone-modal');
   const modalBodyContent = document.getElementById('modal-body-content');
@@ -915,30 +879,176 @@ Always & Forever Yours,`;
       `
     },
     3: {
-      title: "Side by Side 🌌",
-      subtitle: "New places. Same love.",
-      body: `
-        <div style="text-align: center;">
-          <h4 style="font-size: 1.4rem; color: var(--accent-red); margin-bottom: 16px;">Our Couples Adventure List 🗺️</h4>
-          <ul style="text-align: left; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 1.1rem;">
-            <li><input type="checkbox" checked> 💖 Stargazing on a warm quiet beach</li>
-            <li><input type="checkbox" checked> 🚗 Road tripping with our favorite playlist</li>
-            <li><input type="checkbox"> 🥐 Exploring cozy bakeries in new cities</li>
-            <li><input type="checkbox"> 📸 Taking thousands of polaroid photos together</li>
-          </ul>
-          <p style="margin-top: 22px; font-family: var(--font-handwriting); font-size: 1.6rem; color: var(--accent-red);">
-            "Every place in the world is beautiful when I'm walking through it holding your hand."
-          </p>
-        </div>
-      `
+      isGiftLockModal: true,
+      title: "My Gift For You 🎁",
+      subtitle: "A little surprise waiting just for you. ❤️"
     }
   };
+
+  const giftMessageText = `❤️ My love,
+
+This is my little gift for you. I don't know exactly how or when it'll finally get to you, but I know one day it will. For now, I just want you to look at it and smile.
+
+It's not a big or expensive gift, but it's something I picked with you in my heart. I hope that whenever you see it, you remember how much you mean to me and how thankful I am to have you in my life.
+
+Seeing you happy is the best gift I could ever ask for. So until I can finally put this in your hands, just smile for me and know that you're always in my thoughts.
+
+I love you more than words can say. Always. ❤️`;
+
+  function startTypewriterText(container, text, speed = 18) {
+    container.innerHTML = '';
+    const paragraphs = text.split('\n\n');
+    let pIdx = 0;
+    let cIdx = 0;
+
+    function typeChar() {
+      if (pIdx < paragraphs.length) {
+        let currentP = container.children[pIdx];
+        if (!currentP) {
+          currentP = document.createElement('p');
+          if (pIdx === 0) {
+            currentP.style.fontFamily = 'var(--font-handwriting)';
+            currentP.style.fontSize = '2.2rem';
+            currentP.style.color = 'var(--accent-red)';
+            currentP.style.fontWeight = '700';
+          } else if (pIdx === paragraphs.length - 1) {
+            currentP.className = 'dream-house-promise';
+          }
+          currentP.style.marginBottom = '14px';
+          container.appendChild(currentP);
+        }
+
+        const pText = paragraphs[pIdx];
+        if (cIdx < pText.length) {
+          currentP.textContent += pText.charAt(cIdx);
+          cIdx++;
+          setTimeout(typeChar, speed);
+        } else {
+          pIdx++;
+          cIdx = 0;
+          setTimeout(typeChar, 180);
+        }
+      }
+    }
+    typeChar();
+  }
+
+  function renderGiftLockForm() {
+    if (!modalBodyContent) return;
+
+    modalBodyContent.innerHTML = `
+      <div class="dream-house-modal-content" id="gift-lock-box">
+        <div class="lock-icon-big">🎁</div>
+        <h3 class="dream-house-title">Unlock Your Gift</h3>
+        <p class="lock-subtitle-quote">"Answer this little question first. ❤️"</p>
+
+        <div class="secret-question-box">
+          <p class="lock-question-text">What is your favorite colour? 🎨❤️</p>
+          
+          <div class="secret-input-wrapper">
+            <input type="password" id="gift-color-input" class="secret-input-custom" placeholder="Type your answer..." autocomplete="off" onpaste="return false;" spellcheck="false">
+            <button type="button" id="btn-gift-eye" class="eye-toggle-btn" aria-label="Toggle password visibility" title="Show/Hide Answer">👁️</button>
+          </div>
+
+          <button type="button" id="btn-unlock-gift-color" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 16px;">✨ Unlock My Gift ✨</button>
+        </div>
+
+        <div class="lock-feedback" id="gift-lock-feedback"></div>
+      </div>
+    `;
+
+    const giftInput = document.getElementById('gift-color-input');
+    const btnGiftEye = document.getElementById('btn-gift-eye');
+    const btnUnlockGift = document.getElementById('btn-unlock-gift-color');
+    const giftFeedback = document.getElementById('gift-lock-feedback');
+
+    if (giftInput) {
+      giftInput.addEventListener('paste', (e) => e.preventDefault());
+      giftInput.addEventListener('input', () => {
+        giftInput.classList.remove('input-error');
+        if (giftFeedback) {
+          giftFeedback.textContent = '';
+          giftFeedback.className = 'lock-feedback';
+        }
+      });
+      giftInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          validateGiftColor();
+        }
+      });
+    }
+
+    if (btnGiftEye && giftInput) {
+      btnGiftEye.addEventListener('click', () => {
+        const isPass = giftInput.getAttribute('type') === 'password';
+        giftInput.setAttribute('type', isPass ? 'text' : 'password');
+        btnGiftEye.textContent = isPass ? '🙈' : '👁️';
+      });
+    }
+
+    function validateGiftColor() {
+      if (!giftInput) return;
+      const ans = giftInput.value ? giftInput.value.trim().toLowerCase() : '';
+
+      if (ans === 'maroon') {
+        playChimeMelody([523.25, 659.25, 783.99, 1046.50, 1318.51]);
+        triggerConfetti(90);
+        createBurstHearts(modalBodyContent);
+
+        renderRevealedGiftDisplay();
+      } else {
+        if (giftFeedback) {
+          giftFeedback.className = 'lock-feedback error';
+          giftFeedback.textContent = "That's not the colour I know you love. 🥺❤️ Try again.";
+        }
+        giftInput.classList.add('input-error');
+        const lockBox = document.getElementById('gift-lock-box');
+        if (lockBox) {
+          lockBox.classList.add('shake-error');
+          setTimeout(() => lockBox.classList.remove('shake-error'), 450);
+        }
+        playChimeNote(180, 0.4);
+      }
+    }
+
+    if (btnUnlockGift) {
+      btnUnlockGift.addEventListener('click', validateGiftColor);
+    }
+  }
+
+  function renderRevealedGiftDisplay() {
+    if (!modalBodyContent) return;
+
+    modalBodyContent.innerHTML = `
+      <div class="dream-house-modal-content">
+        <div class="dream-house-img-box">
+          <img src="assets/images/pri.jpg" alt="Special Gift For You" class="dream-house-img">
+        </div>
+        
+        <div class="dream-house-text" id="gift-typewriter-box" style="text-align: left;"></div>
+
+        <button type="button" class="btn-primary btn-close-dream-modal" id="btn-close-gift-modal">Close ❤️</button>
+      </div>
+    `;
+
+    document.getElementById('btn-close-gift-modal')?.addEventListener('click', () => {
+      milestoneModal?.classList.remove('active');
+    });
+
+    const typewriterBox = document.getElementById('gift-typewriter-box');
+    if (typewriterBox) {
+      startTypewriterText(typewriterBox, giftMessageText);
+    }
+  }
 
   [1, 2, 3].forEach(id => {
     document.getElementById(`milestone-${id}`)?.addEventListener('click', () => {
       const data = milestoneData[id];
       if (data && modalBodyContent && milestoneModal) {
-        if (data.isCustomModal) {
+        if (data.isGiftLockModal) {
+          renderGiftLockForm();
+        } else if (data.isCustomModal) {
           modalBodyContent.innerHTML = data.body;
           document.getElementById('btn-close-dream-house')?.addEventListener('click', () => {
             milestoneModal.classList.remove('active');

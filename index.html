@@ -230,9 +230,17 @@
          2. MAIN MENU HUB ("THESE ARE FOR YOU!")
          =================================================================== -->
     <section id="main-menu-view" class="view-section">
+      <!-- Section Background Video & Dark Overlay -->
+      <div class="section-bg-video-wrapper">
+        <video class="section-bg-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
+          <source src="video/2.mp4" type="video/mp4">
+        </video>
+        <div class="section-bg-overlay"></div>
+      </div>
+
       <div class="menu-header">
         <h2 class="menu-title text-shimmer">THESE ARE FOR YOU! 🎁</h2>
-        <p class="menu-subtitle">Click on any gift card below to open your special birthday surprises...</p>
+        <p class="menu-subtitle" style="color: #F0E6DF; font-family: var(--font-doodle); font-size: 1.15rem; text-shadow: 0 2px 6px rgba(0,0,0,0.6);">Click on any gift card below to open your special birthday surprises...</p>
       </div>
 
       <div class="cards-grid">
@@ -412,6 +420,14 @@ Always & Forever Yours,
          3D. SUB-VIEW: SECRET QUESTION LOCK & UNLOCKED SURPRISE
          =================================================================== -->
     <section id="lock-view" class="view-section">
+      <!-- Section Background Video & Dark Overlay -->
+      <div class="section-bg-video-wrapper">
+        <video class="section-bg-video" autoplay loop muted playsinline webkit-playsinline preload="auto">
+          <source src="video/2.mp4" type="video/mp4">
+        </video>
+        <div class="section-bg-overlay"></div>
+      </div>
+
       <div class="sub-view-container">
         <button class="back-btn btn-back-menu">🏠 Back to Main Menu</button>
         
@@ -446,32 +462,9 @@ Always & Forever Yours,
           </div>
           <div class="unlocked-header">
             <h2 class="unlocked-title text-shimmer">One last surprise...</h2>
-            <p style="font-size: 1.3rem; color: var(--accent-red); font-family: var(--font-handwriting); font-weight: 700;">
+            <p class="unlocked-subtitle">
               ✨ Our Future Plans ✨
             </p>
-
-            <!-- Reunion Countdown Timer Widget -->
-            <div class="countdown-box">
-              <div class="countdown-unit">
-                <div class="countdown-num" id="cd-days">30</div>
-                <div class="countdown-label">Days</div>
-              </div>
-              <div style="font-family: var(--font-handwriting); font-size: 1.8rem; color: var(--accent-red);">:</div>
-              <div class="countdown-unit">
-                <div class="countdown-num" id="cd-hours">14</div>
-                <div class="countdown-label">Hours</div>
-              </div>
-              <div style="font-family: var(--font-handwriting); font-size: 1.8rem; color: var(--accent-red);">:</div>
-              <div class="countdown-unit">
-                <div class="countdown-num" id="cd-mins">25</div>
-                <div class="countdown-label">Mins</div>
-              </div>
-              <div style="font-family: var(--font-handwriting); font-size: 1.8rem; color: var(--accent-red);">:</div>
-              <div class="countdown-unit">
-                <div class="countdown-num" id="cd-secs">42</div>
-                <div class="countdown-label">Secs</div>
-              </div>
-            </div>
           </div>
 
           <div class="milestones-grid">
@@ -489,11 +482,11 @@ Always & Forever Yours,
               <p class="milestone-quote">"Where I hope our forever begins. ❤️"</p>
             </article>
 
-            <!-- Card 3: Side by Side -->
+            <!-- Card 3: My Gift For You -->
             <article class="milestone-card" id="milestone-3">
-              <div class="milestone-icon">🌌</div>
-              <h3 class="milestone-title">Side by Side</h3>
-              <p class="milestone-quote">"New places. Same love."</p>
+              <div class="milestone-icon">🎁</div>
+              <h3 class="milestone-title">My Gift For You</h3>
+              <p class="milestone-quote">"A little surprise waiting just for you. ❤️"</p>
             </article>
           </div>
         </div>
